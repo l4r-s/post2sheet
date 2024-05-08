@@ -20,6 +20,21 @@ GOOGLE_SHEET_ID=<GOOGLE SHEET ID>
 GOOGLE_CLOUD_CREDENTIALS={"type": "service_account","project_id": "defaul...
 ```
 
+You can now find your default worker url `*.workers.dev` when you edit the code of the Worker in the Cloudflare Dashboard. Alternatively add a `Workers Route` for one of your domain.
+
+## Usage
+
+New data can be added with:
+
+```
+curl https://worker-url.workers.dev \
+    -X POST \
+    -H'Content-Type: application/json' \
+    -d '{"email": "test@test.com2"}'
+```
+
+Every keys value that gets posted as JSON Data to the worker will end up in his own column in the Google sheet document.
+
 ## Google Sheets
 
 To make the Google Sheets API call work proceed as follow:
@@ -35,7 +50,7 @@ To make the Google Sheets API call work proceed as follow:
 The following environment variables need to be set to enable Telegram notifications when receiving new data:
 
 ```
-TELEGRAM_ENABLED=true
+TELEGRAM_ENABLED=1
 TELEGRAM_BOT_TOKEN=<YOUR TELEGRAM BOT TOKEN FROM BOTFATHER>
 TELEGRAM_CHAT_ID=<TELEGRAM CHAT ID WHERE MESSAGES ARE SENT TO>
 ```
