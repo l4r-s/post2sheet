@@ -4,6 +4,22 @@ Cloudflare worker that accepts HTTP JSON POST data and writes it to a google she
 
 Optional: send a Message via Telegram when new data was received (will also notify if the Google Sheets API call did not work).
 
+## Setup
+
+The [wrangler-action](https://github.com/cloudflare/wrangler-action) Github Action is already configured in this project.
+
+To deploy this worker with wrangler-action fork this repository and add a [Cloudflare API token for Worker deployment](https://developers.cloudflare.com/workers/wrangler/ci-cd/#api-token) to the Github Repository Secret `CLOUDFLARE_API_TOKEN` and push to main.
+
+After the first deployment add the following Environment varibales to the created cloudflare worker:
+
+```
+TELEGRAM_ENABLED=true
+TELEGRAM_BOT_TOKEN=<YOUR TELEGRAM BOT TOKEN FROM BOTFATHER>
+TELEGRAM_CHAT_ID=<TELEGRAM CHAT ID WHERE MESSAGES ARE SENT TO>
+GOOGLE_SHEET_ID=<GOOGLE SHEET ID>
+GOOGLE_CLOUD_CREDENTIALS={"type": "service_account","project_id": "defaul...
+```
+
 ## Google Sheets
 
 To make the Google Sheets API call work proceed as follow:
@@ -29,6 +45,6 @@ TELEGRAM_CHAT_ID=<TELEGRAM CHAT ID WHERE MESSAGES ARE SENT TO>
 The `TELEGRAM_CHAT_ID` can be found with a simple curl message.
 Open a chat with your bot and send a message, then get the chat id from the following API response:
 
-´´´
+```
 curl https://api.telegram.org/bot<Bot_token>/getUpdates
-´´´
+```
