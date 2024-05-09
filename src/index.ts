@@ -1,6 +1,6 @@
 import { getAccessToken } from "web-auth-library/google";
 import { sendTelegram } from "./telegram";
-import { addRowToGoogleSheet } from "./google_sheets";
+import { addRowToGoogleSheet, isFirstRowPopulated } from "./google_sheets";
 
 export interface Env {
   GOOGLE_CLOUD_CREDENTIALS: string;
@@ -24,12 +24,21 @@ export default {
     if (request.method === "POST") {
       let data: any;
       try {
-        data = await request.json();
+        const reqData = await request.json();
+        data = {
+          timestamp: new Date().toISOString(),
+          ...reqData!,
+        };
       } catch (err) {
         return new Response(JSON.stringify({ message: "Invalid JSON!" }), {
           headers,
           status: 400,
         });
+      }
+
+      // add headers to data
+      for (const [key, value] of request.headers.entries()) {
+        data[`header_${key}`] = value;
       }
 
       // Generate a short lived access token from the service account key credentials
@@ -38,6 +47,25 @@ export default {
         scope: "https://www.googleapis.com/auth/spreadsheets",
       });
 
+      // check first row in sheet is populated, if not add header row
+      const populated = await isFirstRowPopulated({
+        token: accessToken,
+        sheetId: env.GOOGLE_SHEET_ID,
+      });
+
+      console.log(populated);
+
+      if (!populated.populated) {
+        console.log("in here");
+        await addRowToGoogleSheet({
+          token: accessToken,
+          sheetId: env.GOOGLE_SHEET_ID,
+          range: "Sheet1!A1",
+          values: [Object.keys(data)],
+        });
+      }
+
+      // add data
       const googleResponse = await addRowToGoogleSheet({
         token: accessToken,
         sheetId: env.GOOGLE_SHEET_ID,
@@ -49,7 +77,7 @@ export default {
       if (env.TELEGRAM_ENABLED) {
         ctx.waitUntil(
           (async () => {
-            let msg = `New data received:\n${JSON.stringify(data)}`;
+            let msg = `New data received:\n${JSON.stringify(data, null, 2)}`;
             if (googleResponse.failed) {
               msg += `\n❗ Adding to Sheet ${env.GOOGLE_SHEET_ID} failed:\n${googleResponse.error}`;
             }
