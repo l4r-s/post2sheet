@@ -1,3 +1,6 @@
 name = "post2sheets"
 main = "src/index.ts"
 compatibility_date = "2024-05-08"
+
+[vars]
+TELEGRAM_ENABLED=1
