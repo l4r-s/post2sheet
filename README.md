@@ -10,10 +10,10 @@ The [wrangler-action](https://github.com/cloudflare/wrangler-action) Github Acti
 
 To deploy this worker with wrangler-action fork this repository and add a [Cloudflare API token for Worker deployment](https://developers.cloudflare.com/workers/wrangler/ci-cd/#api-token) to the Github Repository Secret `CLOUDFLARE_API_TOKEN` and push to main.
 
-After the first deployment add the following Environment varibales to the created cloudflare worker:
+After the first deployment add the following Environment varibales to the created cloudflare worker. Add them as encrypted variables or they may be gone with future deployments:
 
 ```
-TELEGRAM_ENABLED=true
+TELEGRAM_ENABLED=1
 TELEGRAM_BOT_TOKEN=<YOUR TELEGRAM BOT TOKEN FROM BOTFATHER>
 TELEGRAM_CHAT_ID=<TELEGRAM CHAT ID WHERE MESSAGES ARE SENT TO>
 GOOGLE_SHEET_ID=<GOOGLE SHEET ID>
