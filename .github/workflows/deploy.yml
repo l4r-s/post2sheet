@@ -7,17 +7,24 @@ on:
       - main
 
 jobs:
-  deploy:
+  deploy_wecontextify:
     runs-on: ubuntu-latest
-    name: Deploy
+    name: Deploy list.weContextify.com
     steps:
       - uses: actions/checkout@v4
-      - name: Deploy list.weContextify.com
+      - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: publish --name post2sheet-wecontextify
+          command: |
+            depoly --name $WORKER_NAME
+            echo -n "$TELEGRAM_ENABLED" | wrangler secret put TELEGRAM_ENABLED --name $WORKER_NAME
+            echo -n "$TELEGRAM_CHAT_ID" | wrangler secret put TELEGRAM_CHAT_ID --name $WORKER_NAME
+            echo -n "$GOOGLE_SHEET_ID" | wrangler secret put GOOGLE_SHEET_ID --name $WORKER_NAME
+            echo -n "$GOOGLE_CLOUD_CREDENTIALS" | wrangler secret put GOOGLE_CLOUD_CREDENTIALS --name $WORKER_NAME
+            echo -n "$TELEGRAM_BOT_TOKEN" | wrangler secret put TELEGRAM_BOT_TOKEN --name $WORKER_NAME
         env:
+          WORKER_NAME: post2sheet-wecontextify
           TELEGRAM_ENABLED: 1
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
