@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  deploy_list_wecontextify:
     runs-on: ubuntu-latest
     name: Deploy list.weContextify.com
     steps:
@@ -30,5 +30,31 @@ jobs:
           TELEGRAM_ENABLED: 1
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+          GOOGLE_CLOUD_CREDENTIALS: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+
+  deploy_list_scrapeforme:
+    runs-on: ubuntu-latest
+    name: Deploy list.scrapefor.me
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set Name
+        run: sed -i 's/name = "post2sheets"/name = "post2sheets-list-scrapefor-me"/g' wrangler.toml
+
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          secrets: |
+            TELEGRAM_ENABLED
+            TELEGRAM_CHAT_ID
+            GOOGLE_SHEET_ID
+            GOOGLE_CLOUD_CREDENTIALS
+            TELEGRAM_BOT_TOKEN
+        env:
+          TELEGRAM_ENABLED: 1
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID_SCRAPE_FOR_ME }}
           GOOGLE_CLOUD_CREDENTIALS: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
