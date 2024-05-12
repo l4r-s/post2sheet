@@ -17,12 +17,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           command: publish --name post2sheet-wecontextify
-          secrets: |
-            TELEGRAM_ENABLED
-            TELEGRAM_CHAT_ID
-            GOOGLE_SHEET_ID
-            GOOGLE_CLOUD_CREDENTIALS
-            TELEGRAM_BOT_TOKEN
         env:
           TELEGRAM_ENABLED: 1
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
