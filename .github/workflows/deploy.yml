@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set Name
-        run: sed -i 's/name = "post2sheets"/name = "post2sheets-list.wecontextify.com"/g' wrangler.toml
+        run: sed -i 's/name = "post2sheets"/name = "post2sheets-list-wecontextify-com"/g' wrangler.toml
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
