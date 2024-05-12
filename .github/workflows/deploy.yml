@@ -12,11 +12,11 @@ jobs:
     name: Deploy
     steps:
       - uses: actions/checkout@v4
-      - name: Deploy
+      - name: Deploy list.weContextify.com
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: whoami
+          command: publish --name post2sheet-wecontextify
           secrets: |
             TELEGRAM_ENABLED
             TELEGRAM_CHAT_ID
