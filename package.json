@@ -2,10 +2,10 @@
   "name": "post2sheets",
   "version": "0.0.0",
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20240502.0",
-    "typescript": "^5.4.5",
+    "@cloudflare/workers-types": "^4.20240620.0",
+    "typescript": "^5.5.3",
     "vitest": "^1.6.0",
-    "wrangler": "3.55.0"
+    "wrangler": "3.63.1"
   },
   "private": true,
   "scripts": {
